@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "impiegato")
@@ -20,18 +22,23 @@ public class Impiegato {
 	@Column(name = "id")
 	private Long id;
 
+	@NotBlank(message = "{nome.notblank}")
 	@Column(name = "nome")
 	private String nome;
 
+	@NotBlank(message = "{cognome.notblank}")
 	@Column(name = "cognome")
 	private String cognome;
 
+	@NotBlank(message = "{matricola.notblank}")
 	@Column(name = "matricola")
 	private String matricola;
 
+	@NotNull(message = "{dataDiNascita.notnull}")
 	@Column(name = "datadinascita")
 	private Date dataDiNascita;
 
+	@NotNull(message = "{stato.notblank}")
 	@Column(name = "stato")
 	@Enumerated(EnumType.STRING)
 	private StatoImpiegato stato;

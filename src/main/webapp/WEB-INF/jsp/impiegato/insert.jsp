@@ -1,12 +1,19 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!doctype html>
 <html lang="it" class="h-100" >
 	 <head>
 	 
 	 	<!-- Common imports in pages -->
 	 	<jsp:include page="../header.jsp" />
-	   
-	   <title>Inserisci Nuovo Elemento</title>
+		<style>
+			.error_field {
+				color: red;
+			}
+		</style>
+
+<title>Inserisci Nuovo Elemento</title>
 	 </head>
 	   <body class="d-flex flex-column h-100">
 	   
@@ -17,6 +24,14 @@
 			<!-- Begin page content -->
 			<main class="flex-shrink-0">
 			  <div class="container">
+			  
+			  		<%-- se l'attributo in request ha errori --%>
+					<spring:hasBindErrors  name="insert_impiegato_attr">
+						<%-- alert errori --%>
+						<div class="alert alert-danger " role="alert">
+							Attenzione!! Sono presenti errori di validazione
+						</div>
+					</spring:hasBindErrors>
 			  
 			  		<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none':'' }" role="alert">
 					  ${errorMessage}
@@ -40,39 +55,55 @@
 							<h6 class="card-title">I campi con <span class="text-danger">*</span> sono obbligatori</h6>
 		
 		
-							<form method="post" action="${pageContext.request.contextPath}/impiegato/save" class="row g-3" novalidate="novalidate">
+							<form:form modelAttribute="insert_impiegato_attr" method="post" action="save" class="row g-3" novalidate="novalidate">
 							
 							
 								<div class="col-md-6">
 									<label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
-									<input type="text" name="nome" id="nome" class="form-control" placeholder="Inserire il nome" value="${insert_impiegato_attr.nome }" required>
+									<spring:bind path="nome">
+										<input type="text" name="nome" id="nome" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il nome" value="${insert_impiegato_attr.nome }" required>
+									</spring:bind>
+									<form:errors  path="nome" cssClass="error_field" />
 								</div>
 								
 								<div class="col-md-6">
 									<label for="cognome" class="form-label">Cognome <span class="text-danger">*</span></label>
-									<input type="text" name="cognome" id="cognome" class="form-control" placeholder="Inserire il cognome" value="${insert_impiegato_attr.cognome }" required>
+									<spring:bind path="cognome">
+										<input type="text" name="cognome" id="cognome" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il cognome" value="${insert_impiegato_attr.cognome }" required>
+									</spring:bind>
+									<form:errors  path="cognome" cssClass="error_field" />
 								</div>
 							
 								<div class="col-md-6">
 									<label for="matricola" class="form-label">Matricola <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" name="matricola" id="matricola" placeholder="Inserire la matricola" value="${insert_impiegato_attr.matricola }" required>
+									<spring:bind path="matricola">
+										<input type="text" name="matricola" id="matricola" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il cognome" value="${insert_impiegato_attr.matricola }" required>
+									</spring:bind>
+									<form:errors  path="matricola" cssClass="error_field" />
 								</div>
 								
 								<fmt:formatDate pattern='yyyy-MM-dd' var="parsedDate" type='date' value='${insert_impiegato_attr.dataDiNascita}' />
 								<div class="col-md-3">
 									<label for="dataDiNascita" class="form-label">Data di Nascita <span class="text-danger">*</span></label>
-                        			<input class="form-control" id="dataDiNascita" type="date" placeholder="dd/MM/yy"
-                            			title="formato : gg/mm/aaaa"  name="dataDiNascita" required value="${parsedDate}" >
+                        			<spring:bind path="dataDiNascita">
+	                        		<input class="form-control ${status.error ? 'is-invalid' : ''}" id="dataDiNascita" type="date" placeholder="dd/MM/yy"
+	                            		title="formato : gg/mm/aaaa"  name="dataDiNascita" required 
+	                            		value="${parsedDate}" >
+		                            </spring:bind>
+	                            	<form:errors  path="dataDiNascita" cssClass="error_field" />
 								</div>
 								
 								<div class="col-md-3">
 									<label for="stato" class="form-label">Stato <span class="text-danger">*</span></label>
-								    <select class="form-select" id="stato" name="stato" required>
-								    	<option value="" selected> - Selezionare - </option>
-								    	<option value="ATTIVO" ${insert_impiegato_attr.stato == 'ATTIVO'?'selected':''}>ATTIVO</option>
-								      	<option value="SOSPESO" ${insert_impiegato_attr.stato == 'SOSPESO'?'selected':''}>SOSPESO</option>
-								      	<option value="DIMESSO" ${insert_impiegato_attr.stato == 'DIMESSO'?'selected':''}>DIMESSO</option>
-								    </select>
+								    <spring:bind path="stato">
+									    <select class="form-select ${status.error ? 'is-invalid' : ''}" id="stato" name="stato" required>
+									    	<option value="" selected> - Selezionare - </option>
+									    	<option value="ATTIVO" ${insert_impiegato_attr.stato == 'ATTIVO'?'selected':''}>ATTIVO</option>
+									      	<option value="SOSPESO" ${insert_impiegato_attr.stato == 'SOSPESO'?'selected':''}>SOSPESO</option>
+									      	<option value="DIMESSO" ${insert_impiegato_attr.stato == 'DIMESSO'?'selected':''}>DIMESSO</option>
+								    	</select>
+								    </spring:bind>
+								    <form:errors  path="stato" cssClass="error_field" />
 								</div>
 								
 								
@@ -80,7 +111,7 @@
 								<button type="submit" name="submit" value="submit" id="submit" class="btn btn-primary">Conferma</button>
 							</div>
 		
-						</form>
+						</form:form>
   
 				    
 				    
