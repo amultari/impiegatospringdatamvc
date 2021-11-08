@@ -102,7 +102,7 @@ public class ImpiegatoServiceImpl implements ImpiegatoService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Impiegato> cercaByCognomeENomeILike(String nomeTerm, String cognomeTerm) {
+	public List<Impiegato> cercaByCognomeENomeILike(String cognomeTerm, String nomeTerm) {
 		return repository.findByCognomeIgnoreCaseContainingOrNomeIgnoreCaseContainingOrderByCognomeAsc(nomeTerm,
 				cognomeTerm);
 	}

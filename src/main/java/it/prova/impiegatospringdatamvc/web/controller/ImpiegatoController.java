@@ -60,7 +60,6 @@ public class ImpiegatoController {
 		// questa è fatta a mano e per ora prendiamola per buona
 		if (!UtilityForm.validateBean(impiegato)) {
 			model.addAttribute("errorMessage", "Attenzione! Sono presenti errori di validazione");
-			model.addAttribute("insert_impiegato_attr", impiegato);
 			return "impiegato/insert";
 		}
 		// ======================================================================

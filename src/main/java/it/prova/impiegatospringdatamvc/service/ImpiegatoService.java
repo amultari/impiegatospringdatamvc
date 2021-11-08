@@ -17,5 +17,5 @@ public interface ImpiegatoService {
 	
 	public List<Impiegato> findByExample(Impiegato example);
 	
-	public List<Impiegato> cercaByCognomeENomeILike(String nomeTerm, String cognomeTerm);
+	public List<Impiegato> cercaByCognomeENomeILike(String cognomeTerm, String nomeTerm);
 }
